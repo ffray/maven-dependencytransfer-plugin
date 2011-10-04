@@ -1,0 +1,20 @@
+Maven Dependency Transfer Plugin
+================================
+
+This plugin allows transferring dependencies from some repositories to another.
+While some repository managers already have such functionality, I was in need to copy
+dependencies along with their POMs, their full dependencies and their parents to an internal repository by hand.
+So I created this little helper to save some time.
+
+
+Building
+========
+
+This is a standard Maven build. So use commands like 'mvn clean install' to get this plugin built and installed to your repository.
+
+
+Contributing
+============
+
+Feel free to drop me a note to florian.fray@itcf.biz if you find this plugin useful and would like to enhance it.
+
