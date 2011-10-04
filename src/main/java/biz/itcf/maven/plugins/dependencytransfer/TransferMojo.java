@@ -106,7 +106,7 @@ public class TransferMojo extends AbstractMojo {
      * @required
      */
     private String version;
-    
+
     /**
      * @parameter expression="${classifier}"
      */
@@ -116,7 +116,7 @@ public class TransferMojo extends AbstractMojo {
      * @parameter expression="${extension}"
      */
     private String extension;
-    
+
     /**
      * @parameter expression="${targetRepositoryUrl}"
      * @required
@@ -186,45 +186,50 @@ public class TransferMojo extends AbstractMojo {
             repoSystem.deploy(repoSession, deployRequest);
         }
         catch (ArtifactResolutionException e) {
-            e.printStackTrace();
-        }
-        catch (ModelBuildingException e) {
-            e.printStackTrace();
+            throw new MojoFailureException("Failed to resolve POM artifact.", e);
         }
         catch (DependencyResolutionException e) {
-            e.printStackTrace();
+            throw new MojoFailureException("Could not resolve dependencies.", e);
         }
         catch (DeploymentException e) {
-            e.printStackTrace();
+            throw new MojoFailureException("Failed to deploy artifact, dependencies, parents and descriptors.", e);
         }
     }
 
-    private ArtifactResult resolveParent(Artifact pomArtifact) throws ArtifactResolutionException, ModelBuildingException {
-        ModelBuildingRequest buildingRequest = new DefaultModelBuildingRequest();
-        buildingRequest.setModelResolver(new AvailableModelResolver(repoSession, null, null, artifactResolver, remoteRepositoryManager, projectRepos));
-        buildingRequest.setPomFile(pomArtifact.getFile());
-        buildingRequest.setTwoPhaseBuilding(false);
-        buildingRequest.setSystemProperties(System.getProperties());
-        buildingRequest.setValidationLevel(ModelBuildingRequest.VALIDATION_LEVEL_MINIMAL);
+    private ArtifactResult resolveParent(Artifact pomArtifact) throws MojoFailureException {
+        try {
+            ModelBuildingRequest buildingRequest = new DefaultModelBuildingRequest();
+            buildingRequest.setModelResolver(new AvailableModelResolver(repoSession, null, null, artifactResolver, remoteRepositoryManager, projectRepos));
+            buildingRequest.setPomFile(pomArtifact.getFile());
+            buildingRequest.setTwoPhaseBuilding(false);
+            buildingRequest.setSystemProperties(System.getProperties());
+            buildingRequest.setValidationLevel(ModelBuildingRequest.VALIDATION_LEVEL_MINIMAL);
 
-        ModelBuildingResult build = modelBuilder.build(buildingRequest);
-        Parent dependencyParent = build.getRawModel().getParent();
-        if (dependencyParent != null) {
-            ArtifactRequest parentArtifactRequest = new ArtifactRequest();
-            parentArtifactRequest.setArtifact(new DefaultArtifact(dependencyParent.getGroupId(), dependencyParent.getArtifactId(), "pom", dependencyParent.getVersion()));
-            parentArtifactRequest.setRepositories(projectRepos);
-            return repoSystem.resolveArtifact(repoSession, parentArtifactRequest);
-        } else {
-            return null;
+            ModelBuildingResult build = modelBuilder.build(buildingRequest);
+            Parent dependencyParent = build.getRawModel().getParent();
+            if (dependencyParent != null) {
+                ArtifactRequest parentArtifactRequest = new ArtifactRequest();
+                parentArtifactRequest.setArtifact(new DefaultArtifact(dependencyParent.getGroupId(), dependencyParent.getArtifactId(), "pom", dependencyParent.getVersion()));
+                parentArtifactRequest.setRepositories(projectRepos);
+                return repoSystem.resolveArtifact(repoSession, parentArtifactRequest);
+            } else {
+                return null;
+            }
+        }
+        catch (ArtifactResolutionException e) {
+            throw new MojoFailureException("Could not resolve parent artifact.", e);
+        }
+        catch (ModelBuildingException e) {
+            throw new MojoFailureException("Could not build Maven model for given artifact.", e);
         }
     }
 
     /**
-     * This is a copy of DefaultModelResolver of the maven-aether-provider project (which has package visibility).
-     * TODO: To be removed as soon as DefaultModelResolver has been made available.
+     * This is a copy of DefaultModelResolver of the maven-aether-provider project (which has package visibility). TODO: To be removed as soon as DefaultModelResolver has been made
+     * available.
      * 
      * @author Florian Fray (last modified by $Author: $)
-     * @version $Revision: $ $Date:  $
+     * @version $Revision: $ $Date: $
      */
     static class AvailableModelResolver implements ModelResolver {
 
