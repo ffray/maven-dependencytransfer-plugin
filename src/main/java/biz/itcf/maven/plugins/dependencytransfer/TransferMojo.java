@@ -133,56 +133,8 @@ public class TransferMojo extends AbstractMojo {
      */
     private String password;
 
-    static final class FileUtils {
-
-        private FileUtils() {
-        }
-
-        public static void delete(File f) {
-            if (f.isFile()) {
-                f.delete();
-            } else {
-                // Stack<File> s = new Stack<File>();
-                // s.push(f);
-                // while (!s.isEmpty()) {
-                // File dir = s.peek();
-                // File[] containedFiles = dir.listFiles();
-                // boolean isEmpty = true;
-                // for (File fSub : containedFiles) {
-                // if (fSub.isFile()) {
-                // fSub.delete();
-                // } else {
-                // isEmpty = false;
-                // s.push(fSub);
-                // }
-                // }
-                // if (isEmpty) {
-                // dir.delete();
-                // s.pop();
-                // }
-                // }
-                for (File sub : f.listFiles()) {
-                    delete(sub);
-                }
-                f.delete();
-            }
-        }
-    }
-
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-//        String basedir = "/Users/Florian/transfer";
-//
-//        File basedirFile = new File(basedir);
-//        if (basedirFile.exists()) {
-//            if (!basedirFile.isDirectory()) {
-//                throw new MojoFailureException("File " + basedir + " is not a directory");
-//            } else {
-//                FileUtils.delete(basedirFile);
-//            }
-//        }
-//        basedirFile.mkdir();
-
         Artifact rootArtifact = new DefaultArtifact(groupId, artifactId, classifier, extension, version);
         ArtifactRequest artifactRequest = new ArtifactRequest();
         artifactRequest.setArtifact(rootArtifact);
