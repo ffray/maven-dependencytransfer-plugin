@@ -152,8 +152,6 @@ public class TransferMojo extends AbstractMojo {
             DeployRequest deployRequest = new DeployRequest();
             deployRequest.setRepository(targetRepository);
 
-//            InstallRequest installRequest = new InstallRequest();
-
             CollectRequest collectRequest = new CollectRequest();
             collectRequest.setRepositories(projectRepos);
             collectRequest.setRoot(resolvedRootDependency);
@@ -221,6 +219,13 @@ public class TransferMojo extends AbstractMojo {
         }
     }
 
+    /**
+     * This is a copy of DefaultModelResolver of the maven-aether-provider project (which has package visibility).
+     * TODO: To be removed as soon as DefaultModelResolver has been made available.
+     * 
+     * @author Florian Fray (last modified by $Author: $)
+     * @version $Revision: $ $Date:  $
+     */
     static class AvailableModelResolver implements ModelResolver {
 
         private final RepositorySystemSession session;
