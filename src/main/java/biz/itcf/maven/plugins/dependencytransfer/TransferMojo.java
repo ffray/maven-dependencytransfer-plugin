@@ -33,15 +33,12 @@ import org.sonatype.aether.graph.Dependency;
 import org.sonatype.aether.impl.ArtifactResolver;
 import org.sonatype.aether.impl.RemoteRepositoryManager;
 import org.sonatype.aether.repository.Authentication;
-import org.sonatype.aether.repository.LocalRepository;
-import org.sonatype.aether.repository.LocalRepositoryManager;
 import org.sonatype.aether.repository.RemoteRepository;
 import org.sonatype.aether.resolution.ArtifactRequest;
 import org.sonatype.aether.resolution.ArtifactResolutionException;
 import org.sonatype.aether.resolution.ArtifactResult;
 import org.sonatype.aether.resolution.DependencyRequest;
 import org.sonatype.aether.resolution.DependencyResolutionException;
-import org.sonatype.aether.util.DefaultRepositorySystemSession;
 import org.sonatype.aether.util.artifact.DefaultArtifact;
 import org.sonatype.aether.util.artifact.SubArtifact;
 
@@ -219,14 +216,12 @@ public class TransferMojo extends AbstractMojo {
                 if (!deployRequest.getArtifacts().contains(resolvedDependencyArtifact)) {
                     deployRequest.addArtifact(resolvedDependencyArtifact);
                 }
-//                installRequest.addArtifact(resolvedDependencyArtifact);
 
                 ArtifactRequest resolvedDependencyPomRequest = new ArtifactRequest(new SubArtifact(resolvedDependencyArtifact, null, "pom"), projectRepos, null);
                 ArtifactResult resolvedDependencyPomResult = repoSystem.resolveArtifact(repoSession, resolvedDependencyPomRequest);
                 Artifact resolvedDependencyPomArtifact = resolvedDependencyPomResult.getArtifact();
 
                 deployRequest.addArtifact(resolvedDependencyPomArtifact);
-//                installRequest.addArtifact(resolvedDependencyPomArtifact);
 
                 ArtifactResult parentResult = resolveParent(resolvedDependencyPomArtifact);
                 while (parentResult != null) {
@@ -234,26 +229,15 @@ public class TransferMojo extends AbstractMojo {
                     if (!deployRequest.getArtifacts().contains(parentArtifact)) {
                         deployRequest.addArtifact(parentArtifact);
                     }
-//                    if (!installRequest.getArtifacts().contains(parentArtifact)) {
-//                        installRequest.addArtifact(parentArtifact);
-//                    }
                     parentResult = resolveParent(parentArtifact);
                 }
             }
-
-//            LocalRepositoryManager localRepoManager = repoSystem.newLocalRepositoryManager(new LocalRepository(basedir));
-//            DefaultRepositorySystemSession localSession = new DefaultRepositorySystemSession(repoSession);
-//            localSession.setLocalRepositoryManager(localRepoManager);
-//            repoSystem.install(localSession, installRequest);
 
             repoSystem.deploy(repoSession, deployRequest);
         }
         catch (ArtifactResolutionException e) {
             e.printStackTrace();
         }
-//        catch (InstallationException e) {
-//            e.printStackTrace();
-//        }
         catch (ModelBuildingException e) {
             e.printStackTrace();
         }
