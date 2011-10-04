@@ -159,8 +159,6 @@ public class TransferMojo extends AbstractMojo {
             DependencyRequest dependencyRequest = new DependencyRequest(collectRequest, null);
 
             for (ArtifactResult resolvedDependency : repoSystem.resolveDependencies(repoSession, dependencyRequest).getArtifactResults()) {
-                System.out.println("adding resolved dependency " + resolvedDependency.getArtifact());
-
                 Artifact resolvedDependencyArtifact = resolvedDependency.getArtifact();
 
                 if (!deployRequest.getArtifacts().contains(resolvedDependencyArtifact)) {
