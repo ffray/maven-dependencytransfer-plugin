@@ -1,3 +1,19 @@
+/*
+ *  Copyright 2011 Florian Fray
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package biz.itcf.maven.plugins.dependencytransfer;
 
 import java.io.File;
@@ -43,11 +59,8 @@ import org.sonatype.aether.util.artifact.DefaultArtifact;
 import org.sonatype.aether.util.artifact.SubArtifact;
 
 /**
- * <p>
- * </p>
  * 
- * @author Florian Fray (last modified by $Author: $)
- * @version $Revision: $ $Date: $
+ * @author Florian Fray
  * 
  * @goal transfer
  */
@@ -221,13 +234,32 @@ public class TransferMojo extends AbstractMojo {
             throw new MojoFailureException("Could not build Maven model for given artifact.", e);
         }
     }
-
-    /**
-     * This is a copy of DefaultModelResolver of the maven-aether-provider project (which has package visibility). TODO: To be removed as soon as DefaultModelResolver has been made
-     * available.
+    
+    
+    /*
+     * This is the original License hint for the class DefaultModelResolver, as found at:
+     * http://svn.apache.org/viewvc/maven/maven-3/tags/maven-3.0.3/maven-aether-provider/src/main/java/org/apache/maven/repository/internal/DefaultModelResolver.java?revision=1075437
      * 
-     * @author Florian Fray (last modified by $Author: $)
-     * @version $Revision: $ $Date: $
+     * Licensed to the Apache Software Foundation (ASF) under one
+     * or more contributor license agreements.  See the NOTICE file
+     * distributed with this work for additional information
+     * regarding copyright ownership.  The ASF licenses this file
+     * to you under the Apache License, Version 2.0 (the
+     * "License"); you may not use this file except in compliance
+     * with the License.  You may obtain a copy of the License at
+     * 
+     *     http://www.apache.org/licenses/LICENSE-2.0
+     * 
+     * Unless required by applicable law or agreed to in writing,
+     * software distributed under the License is distributed on an
+     * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     * KIND, either express or implied.  See the License for the
+     * specific language governing permissions and limitations
+     * under the License.
+     */
+    /**
+     * This is a copy of org.apache.maven.repository.internal.DefaultModelResolver of the maven-aether-provider project (which has package visibility).
+     * TODO: To be removed as soon as DefaultModelResolver has been made available.
      */
     static class AvailableModelResolver implements ModelResolver {
 
