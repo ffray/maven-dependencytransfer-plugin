@@ -15,7 +15,7 @@
 
   <issueManagement>
     <system>jira</system>
-    <url>http://issues.itcf.biz/browse/DETP</url>
+    <url>https://issues.itcf.biz/browse/DETP</url>
   </issueManagement>
 
   <ciManagement>
@@ -25,6 +25,7 @@
 
   <scm>
     <developerConnection>scm:git:https://github.com/ffray/maven-dependencytransfer-plugin.git</developerConnection>
+    <url>https://github.com/ffray/maven-dependencytransfer-plugin</url>
   </scm>
 
   <developers>
